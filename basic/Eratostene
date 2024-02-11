@@ -1,0 +1,29 @@
+def eratostene(n):
+    if n < 2: 
+        print('Need higher number')
+    else:
+        a = [True for i in range(n+1)]
+        a[0] = a[1] = False
+        
+        for i in range(2, n+1):
+            if a[i]:
+                for j in range(i*i, n+1, i): #starting from i*i we ensure that we mark as False only multiples of i not yet marked
+                    a[j] = False
+        
+        primes = [i for i in range(2, n+1) if a[i]]
+        return primes
+    
+
+while True:
+    try:
+        k = int(input('Enter a number (0 to exit): '))
+        if k == 0: 
+            break
+        else:
+            primes = eratostene(k)
+            if k in primes:
+                print(f'{k} is a prime number')
+            else:
+                print(f'{k} is not a prime number')
+    except:
+        ValueError('Insert a valid number')
