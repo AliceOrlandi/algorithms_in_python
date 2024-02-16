@@ -57,7 +57,6 @@ class LinkedList:
         if self.head is None:
             self.head = new_node
             return
-
         current_node = self.head
         while current_node.next is not None:
             current_node = current_node.next
@@ -70,9 +69,9 @@ class LinkedList:
             self.head = None
             return
         current_node = self.head
-        while current_node.next.next is not None:
-            current_node = current_node.next  # find last node
-        current_node.next = None
+        while current_node.next.next is not None:  # find second last node
+            current_node = current_node.next
+        current_node.next = None  # point second last node to None, removing last node
 
     def get_at_index(self, index):
         if index < 0:
@@ -196,6 +195,10 @@ llist.remove_last_node()
 llist.print_list()
 print("Remove Node at Index 1")
 llist.remove_at_index(1)
+llist.print_list()
+
+print("\nSize of linked list :", end=" ")
+print(llist.size())
 llist.print_list()
 
 print("\nSize of linked list :", end=" ")
