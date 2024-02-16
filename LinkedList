@@ -1,0 +1,202 @@
+#!/usr/bin/env python
+
+# Create a LinkedList of Node
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedList:
+    head = None
+
+    def __init__(self):  # initialise an empty linked list --- []
+        self.head = None
+
+    def get_first(self):
+        return self.head  # get first element of the list = HEAD
+
+    def insert_at_begin(self, data):
+        new_node = Node(data)  # create new Node using Node class
+        if self.head is None:  # list is empty --- HEAD = NEW_NODE
+            self.head = new_node
+        else:  # create the pointer to the next node (the previous HEAD) and substitute previous HEAD with new node
+            new_node.next = self.head  # new_node attribute next point to HEAD, [new_node.data, nex_node.next = HEAD]
+            self.head = new_node  # at this point you can put as head the new point --- HEAD = NEW_NODE
+            # creating first the arrow we do not lose the information of HEAD
+
+    def remove_first_node(self):
+        if self.head is None:  # list empty --- return nothing
+            return
+        else:
+            self.head = self.head.next  # else --- make HEAD.next point to next node
+
+    def insert_at_index(self, data, index):
+        if index < 0:
+            raise ValueError('index must be no negative number')
+        new_node = Node(data)
+        if index == 0:
+            new_node.next = self.head
+            self.head = new_node
+            return
+        current_node = self.head
+        current_index = 0
+        prev_node = None
+        # iterate through the list starting from HEAD to get to the right index
+        while current_node is not None and current_index < index:
+            prev_node = current_node
+            current_node = current_node.next
+            current_index += 1
+        if current_node is None and current_index < index:
+            raise IndexError('Index out of range')
+        prev_node.next = new_node
+        new_node.next = current_node
+
+    def insert_at_end(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            return
+
+        current_node = self.head
+        while current_node.next is not None:
+            current_node = current_node.next
+        current_node.next = new_node
+
+    def remove_last_node(self):
+        if self.head is None:
+            return
+        if self.head.next is None:
+            self.head = None
+            return
+        current_node = self.head
+        while current_node.next.next is not None:
+            current_node = current_node.next  # find last node
+        current_node.next = None
+
+    def get_at_index(self, index):
+        if index < 0:
+            raise ValueError('Index must be no negative number')
+        if index == 0:
+            return self.head
+        current_node = self.head
+        current_index = 0
+        while current_node is not None and current_index < index:
+            current_node = current_node.next
+            current_index += 1
+        return current_node
+
+    def remove_at_index(self, index):
+        if index < 0:
+            raise ValueError('Index must be no negative number')
+        if self.head is None:
+            return
+        if index == 0:
+            self.head = self.head.next
+            return
+        current_index = 0
+        current_node = self.head
+        prev_node = None  # make previous node point to next node after current node
+        while current_node is not None and current_index < index:
+            prev_node = current_node
+            current_node = current_node.next
+            current_index += 1
+        if current_node is None and current_index < index:
+            raise IndexError('Index out of bonds')
+        if prev_node is None:
+            self.head = current_node.next
+        else:
+            prev_node.next = current_node.next
+
+    def size(self):
+        size = 0
+        if self.head is None:
+            return 0
+        else:
+            current_node = self.head
+            while current_node is not None:
+                size = size + 1
+                current_node = current_node.next
+            return size
+
+    def print_list(self):
+        current_node = self.head
+        while current_node:
+            print(current_node.data)
+            current_node = current_node.next
+
+
+###########################################################################################################
+# create a new linked list of string
+llist = LinkedList()
+
+# add nodes to the linked list
+llist.insert_at_end('a')
+assert llist.get_at_index(0).data == 'a'
+llist.insert_at_end('b')
+assert llist.get_at_index(1).data == 'b'
+llist.remove_last_node()
+llist.insert_at_end('b')
+llist.insert_at_begin('c')
+llist.insert_at_end('d')
+llist.insert_at_index('g', 2)
+llist.remove_last_node()
+# print the linked list
+print("Node Data")
+llist.print_list()
+
+# remove a nodes from the linked list
+print("\nRemove First Node")
+llist.remove_first_node()
+llist.print_list()
+print("Remove Last Node")
+llist.remove_last_node()
+llist.print_list()
+print("Remove Node at Index 1")
+llist.remove_at_index(0)
+assert llist.size() == 1
+llist.print_list()
+
+print("\nSize of linked list :", end=" ")
+print(llist.size())
+
+
+###########################################################################################################
+# create a new linked list of MyData
+
+class MyData:
+    def __init__(self, id, name, surname):
+        self.id = id
+        self.name = name
+        self.surname = surname
+
+    def __str__(self):
+        return f"id: {self.id}, name: {self.name}, surname: {self.surname}"
+
+
+llist = LinkedList()
+
+# add nodes to the linked list
+llist.insert_at_end(MyData(1, 'a', 'aa'))
+llist.insert_at_end(MyData(2, 'b', 'bb'))
+llist.insert_at_begin(MyData(3, 'c', 'cc'))
+llist.insert_at_end(MyData(4, 'd', 'dd'))
+llist.insert_at_index(MyData(5, 'g', 'gg'), 2)
+
+# print the linked list
+print("Node Data")
+llist.print_list()
+
+# remove a nodes from the linked list
+print("\nRemove First Node")
+llist.remove_first_node()
+llist.print_list()
+print("Remove Last Node")
+llist.remove_last_node()
+llist.print_list()
+print("Remove Node at Index 1")
+llist.remove_at_index(1)
+llist.print_list()
+
+print("\nSize of linked list :", end=" ")
+print(llist.size())
